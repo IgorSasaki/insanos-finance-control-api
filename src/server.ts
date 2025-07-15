@@ -3,6 +3,7 @@ import Fastify from 'fastify'
 import cors from '@fastify/cors'
 
 import { env } from './env.ts'
+import { errorHandler } from './shared/middlewares/errorHandler.ts'
 
 const fastify = Fastify()
 
@@ -27,6 +28,8 @@ const app = async () => {
         success: false
       })
     })
+
+    fastify.setErrorHandler(errorHandler)
 
     await fastify.listen({ port: env.PORT })
 
