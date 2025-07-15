@@ -1,0 +1,51 @@
+{
+  "name": "insanos-finance-control-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.ts",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file .env --experimental-strip-types --no-warnings src/server.ts",
+    "dev": "node --env-file .env --experimental-strip-types --no-warnings --watch src/server.ts",
+    "lint": "eslint . --ext .ts,.tsx",
+    "prepare": "husky",
+    "commit": "git-cz"
+  },
+  "keywords": [],
+  "author": "Igor Sasaki",
+  "license": "MIT",
+  "packageManager": "pnpm@10.12.4",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --config ./prettier.config.mjs --write"
+    ],
+    "**/*.{css,scss,md,html,json}": [
+      "prettier --config ./prettier.config.mjs --write"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^9.31.0",
+    "eslint-plugin-import-helpers": "^2.0.1",
+    "eslint-plugin-perfectionist": "^4.15.0",
+    "eslint-plugin-prettier": "^5.5.1",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.37.0"
+  }
+}
