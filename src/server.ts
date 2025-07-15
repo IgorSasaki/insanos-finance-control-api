@@ -1,22 +1,45 @@
-import cors from 'cors'
-import express from 'express'
+import Fastify from 'fastify'
+
+import cors from '@fastify/cors'
 
 import { env } from './env.ts'
 
-const app = express()
+const fastify = Fastify()
 
-app.use(cors())
-app.use(express.json())
+const app = async () => {
+  try {
+    await fastify.register(cors, {
+      origin: true
+    })
 
-app.get('/health', (_, response) => {
-  response.json({
-    message: 'Insanos Finance Control API is running!',
-    success: true,
-    timestamp: new Date().toISOString(),
-    version: '1.0.0'
-  })
-})
+    fastify.get('/health', async () => {
+      return {
+        message: 'Insanos Finance Control API is running!',
+        success: true,
+        timestamp: new Date().toISOString(),
+        version: '1.0.0'
+      }
+    })
 
-app.listen({ port: env.PORT }, () => {
-  console.log(`HTTP Server running in port ${env.PORT}! 🚀🚀`)
-})
+    fastify.setNotFoundHandler(async (_, response) => {
+      response.status(404).send({
+        message: 'Route not found',
+        success: false
+      })
+    })
+
+    await fastify.listen({ port: env.PORT })
+
+    console.log(`🏍️  Moto Club Cashflow API running on port ${env.PORT}`)
+    console.log(`📖  Health check: http://localhost:${env.PORT}/health`)
+    console.log(`💾  DynamoDB: ${env.DYNAMODB_ENDPOINT || 'AWS'}`)
+  } catch (error) {
+    fastify.log.error({ appError: error })
+
+    process.exit(1)
+  }
+}
+
+app()
+
+export default app

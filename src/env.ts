@@ -8,7 +8,7 @@ const envSchema = z.object({
   DYNAMODB_TABLE_PREFIX: z.string().default('IFC_'),
   JWT_EXPIRES_IN: z.string().default('7d'),
   JWT_SECRET: z.string().min(1),
-  PORT: z.string().default('3333')
+  PORT: z.coerce.number().default(3333)
 })
 
 const env = envSchema.parse(process.env)
