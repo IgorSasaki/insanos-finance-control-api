@@ -3,6 +3,7 @@ import Fastify from 'fastify'
 import cors from '@fastify/cors'
 
 import { env } from './env.ts'
+import { authRoutes } from './interfaces/routes/AuthRoutes.ts'
 import { errorHandler } from './shared/middlewares/errorHandler.ts'
 
 const fastify = Fastify()
@@ -21,6 +22,8 @@ const app = async () => {
         version: '1.0.0'
       }
     })
+
+    await fastify.register(authRoutes, { prefix: '/auth' })
 
     fastify.setNotFoundHandler(async (_, response) => {
       response.status(404).send({
